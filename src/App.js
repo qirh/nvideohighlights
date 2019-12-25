@@ -1,58 +1,91 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
-import _ from 'lodash';
-import './App.css';
+import _ from "lodash";
+import "./App.css";
 
-import SearchBar from './SearchBar.js';
-import DataTable from './Table.js'
-import VideoSelector from './VideoSelector.js'
+import SearchBar from "./SearchBar.js";
+import DataTable from "./Table.js";
+import VideoSelector from "./VideoSelector.js";
 
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       rows: [],
+      columns: [],
       selectedRow: null,
-      searchTerm: '',
+      searchTerm: ""
     };
     this.searchTermChange = this.searchTermChange.bind(this);
   }
 
   componentDidMount() {
+    this.getData();
+    this.getColumns();
+  }
+  getData = () => {
     fetch("https://www.scorebat.com/video-api/v1")
       .then(res => res.json())
-      .then(
-        (result) => {
-          _.forEach(result, (value, key) => {
-            value.competitionName = value.competition.name
-            value.side1Name = value.side1.name
-            value.side2Name = value.side2.name
-          });
+      .then(result => {
+        _.forEach(result, (value, key) => {
+          value.competitionName = value.competition.name;
+          value.side1Name = value.side1.name;
+          value.side2Name = value.side2.name;
+        });
 
-          this.setState({
-            rows: result
-          });
-        }
-      )
-  }
+        this.setState({
+          rows: result
+        });
+      });
+  };
+  getColumns = () => {
+    const columns = [
+      {
+        Header: "Title",
+        accessor: "title"
+      },
+      {
+        Header: "Team1",
+        accessor: "side1Name"
+      },
+      {
+        Header: "Team2",
+        accessor: "side2Name"
+      },
+      {
+        Header: "League",
+        accessor: "competitionName"
+      }
+    ];
+    this.setState({ columns });
+  };
 
-  searchTermChange = (value) => {
-    this.setState({
-      searchTerm: value,
+  onClickRow = rowInfo => {
+    this.setState({ allData: rowInfo }, () => {
+      //console.log(this.state.allData);
     });
-  }
+  };
+
+  searchTermChange = value => {
+    this.setState({
+      searchTerm: value
+    });
+  };
 
   render() {
-    const { rows, selectedRow, searchTerm } = this.state;
+    const { rows, columns, selectedRow, searchTerm } = this.state;
     let filteredRows = [];
 
-    if(searchTerm) {
-      filteredRows = _.filter(rows, (item) => {
-        return item.competitionName.toLowerCase().includes(searchTerm.toLowerCase())
-          || item.side1Name.toLowerCase().includes(searchTerm.toLowerCase())
-          || item.side2Name.toLowerCase().includes(searchTerm.toLowerCase())
-          || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+    if (searchTerm) {
+      filteredRows = _.filter(rows, item => {
+        return (
+          item.competitionName
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+          item.side1Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.side2Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
       });
     } else {
       filteredRows = rows;
@@ -60,9 +93,13 @@ class App extends Component {
 
     return (
       <div className="App">
-        <VideoSelector selectedRow={selectedRow}/>
+        <VideoSelector selectedRow={selectedRow} />
         <SearchBar searchTermChange={this.searchTermChange} />
-        <DataTable rows={filteredRows} />
+        <DataTable
+          rows={filteredRows}
+          columns={columns}
+          rowClicked={this.onClickRow}
+        />
       </div>
     );
   }
