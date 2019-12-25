@@ -5,7 +5,7 @@ import './App.css';
 
 import SearchBar from './SearchBar.js';
 import DataTable from './Table.js'
-import ReactPlayer from 'react-player'
+import VideoSelector from './VideoSelector.js'
 
 class App extends Component {
 
@@ -13,6 +13,7 @@ class App extends Component {
     super(props);
     this.state = {
       rows: [],
+      selectedRow: null,
       searchTerm: '',
     };
     this.searchTermChange = this.searchTermChange.bind(this);
@@ -59,7 +60,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <ReactPlayer url='https://youtu.be/fUpsta0bHEE' playing  style={{ margin: '0 auto', marginBottom: '20px'}} />
+        <VideoSelector />
         <SearchBar searchTermChange={this.searchTermChange} />
         <DataTable rows={filteredRows} />
       </div>
