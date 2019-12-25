@@ -18,7 +18,7 @@ class SearchBar extends Component {
   render() {
     return (
       <div>
-        <form>
+        <form style={{margin: '20px'}} >
           <input
             placeholder="Search"
             value={this.state.value}

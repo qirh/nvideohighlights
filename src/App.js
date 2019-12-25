@@ -61,8 +61,8 @@ class App extends Component {
   };
 
   onClickRow = rowInfo => {
-    this.setState({ allData: rowInfo }, () => {
-      //console.log(this.state.allData);
+    this.setState({
+      selectedRow: rowInfo[0].original
     });
   };
 
