@@ -74,7 +74,7 @@ class App extends Component {
 
   render() {
     const { rows, columns, selectedRow, searchTerm } = this.state;
-    let filteredRows = [];
+    let filteredRows;
 
     if (searchTerm) {
       filteredRows = _.filter(rows, item => {
@@ -93,7 +93,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <VideoSelector selectedRow={selectedRow} />
+        <VideoSelector selectedRow={selectedRow} rows={rows} />
         <SearchBar searchTermChange={this.searchTermChange} />
         <DataTable
           rows={filteredRows}

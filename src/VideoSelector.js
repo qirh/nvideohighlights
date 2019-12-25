@@ -4,26 +4,27 @@ import React, { Component } from "react";
 
 class VideoSelector extends Component {
   render() {
+    let videoFrame = {
+      width: "30%",
+      height: "30%",
+      margin: "auto",
+      paddingTop: "20px"
+    };
+
     let video;
-
     if (this.props.selectedRow) {
-      let url = this.props.selectedRow.videos[0].embed
-      let regex = /.+<iframe.*?src='(.*?)'/;
-      let src = regex.exec(url)[1];
-
-      console.log(src);
-      video = (
-        <div
-          style={{ margin: "0 auto", marginBottom: "20px" }}
-        >
-          {this.props.selectedRow.videos[0].embed}
-        </div>
-      );
+      let url = this.props.selectedRow.videos[0].embed;
+      video = url;
+    } else if (this.props.rows.length) {
+      let url = this.props.rows[0].videos[0].embed;
+      video = url;
     } else {
-      video = <h1>This is heading 1</h1>;
+      video = "<h1>This is heading 1</h1>";
     }
 
-    return <div dangerouslySetInnerHTML={__html: {video}} />
+    return (
+      <div style={videoFrame} dangerouslySetInnerHTML={{ __html: video }} />
+    );
   }
 }
 
