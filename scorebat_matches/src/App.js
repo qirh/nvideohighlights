@@ -8,11 +8,14 @@ import DataTable from './Table.js'
 import ReactPlayer from 'react-player'
 
 class App extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
       rows: [],
+      searchTerm: '',
     };
+    this.searchTermChange = this.searchTermChange.bind(this);
   }
 
   componentDidMount() {
@@ -33,14 +36,32 @@ class App extends Component {
       )
   }
 
+  searchTermChange = (value) => {
+    this.setState({
+      searchTerm: value,
+    });
+  }
+
   render() {
-    const { rows } = this.state;
+    const { rows, searchTerm } = this.state;
+    let filteredRows = [];
+
+    if(searchTerm) {
+      filteredRows = _.filter(rows, (item) => {
+        return item.competitionName.toLowerCase().includes(searchTerm.toLowerCase())
+          || item.side1Name.toLowerCase().includes(searchTerm.toLowerCase())
+          || item.side2Name.toLowerCase().includes(searchTerm.toLowerCase())
+          || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+      });
+    } else {
+      filteredRows = rows;
+    }
 
     return (
       <div className="App">
-        <ReactPlayer url='https://youtu.be/fUpsta0bHEE' playing   style={{ margin: '0 auto', marginBottom: '20px'}} />
-        <SearchBar rows={rows} />
-        <DataTable rows={rows} />
+        <ReactPlayer url='https://youtu.be/fUpsta0bHEE' playing  style={{ margin: '0 auto', marginBottom: '20px'}} />
+        <SearchBar searchTermChange={this.searchTermChange} />
+        <DataTable rows={filteredRows} />
       </div>
     );
   }
