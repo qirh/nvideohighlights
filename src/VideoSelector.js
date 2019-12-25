@@ -21,7 +21,6 @@ class VideoSelector extends Component {
     }
 
     if (selectedRow) {
-      console.log("videos", selectedRow.videos.length);
       video = [];
       for (let i = 0; i < selectedRow.videos.length; i++) {
         video.push(
