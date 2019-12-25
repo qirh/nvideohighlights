@@ -5,25 +5,37 @@ import React, { Component } from "react";
 class VideoSelector extends Component {
   render() {
     let videoFrame = {
-      width: "30%",
-      height: "30%",
+      width: "40%",
+      height: "40%",
       margin: "auto",
       paddingTop: "20px"
     };
 
     let video;
+    let selectedRow;
+
     if (this.props.selectedRow) {
-      let url = this.props.selectedRow.videos[0].embed;
-      video = url;
+      selectedRow = this.props.selectedRow;
     } else if (this.props.rows.length) {
-      let url = this.props.rows[0].videos[0].embed;
-      video = url;
+      selectedRow = this.props.rows[0];
+    }
+
+    if (selectedRow) {
+      console.log("videos", selectedRow.videos.length);
+      video = [];
+      for (let i = 0; i < selectedRow.videos.length; i++) {
+        video.push(
+          selectedRow.videos[i].embed
+        );
+      }
     } else {
-      video = "<h1>This is heading 1</h1>";
+      video = "<h1></h1>";
     }
 
     return (
-      <div style={videoFrame} dangerouslySetInnerHTML={{ __html: video }} />
+      <div style={videoFrame}>
+         <div dangerouslySetInnerHTML={{ __html: video }} />
+       </div>
     );
   }
 }

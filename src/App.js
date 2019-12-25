@@ -31,6 +31,7 @@ class App extends Component {
           value.competitionName = value.competition.name;
           value.side1Name = value.side1.name;
           value.side2Name = value.side2.name;
+          value.numVideos = value.videos.length;
         });
 
         this.setState({
@@ -55,6 +56,10 @@ class App extends Component {
       {
         Header: "League",
         accessor: "competitionName"
+      },
+      {
+        Header: "# Videos",
+        accessor: "numVideos"
       }
     ];
     this.setState({ columns });
