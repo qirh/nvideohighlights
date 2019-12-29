@@ -6,6 +6,7 @@ import "./App.css";
 import SearchBar from "./SearchBar.js";
 import DataTable from "./Table.js";
 import VideoSelector from "./VideoSelector.js";
+import VideoThumbnail from "./VideoThumbnail.js";
 
 class App extends Component {
   constructor(props) {
@@ -99,6 +100,7 @@ class App extends Component {
     return (
       <div className="App">
         <VideoSelector selectedRow={selectedRow} rows={rows} />
+        <VideoThumbnail/>
         <SearchBar searchTermChange={this.searchTermChange} />
         <DataTable
           rows={filteredRows}
